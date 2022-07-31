@@ -26,6 +26,7 @@ class PartnerRepository implements PartnerRepositoryInterface
     public function store($request)
     {
         DB::beginTransaction();
+        if(auth('client')->id() == $request->partner_id) throw new \Exception('Sorry you can not be partener with yourself.');
         auth('client')->user()->partners()->attach($request->partner_id);
         DB::commit();
         return ['Partner added successfully.'];
